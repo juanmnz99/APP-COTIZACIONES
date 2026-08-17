@@ -1,0 +1,511 @@
+/* ============================================================
+   Grupo Pomiglio SRL — Cotizador
+   Reconstruido desde cero sobre el Manual de Marca oficial.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root{
+  /* ---- Paleta oficial (Manual de Marca, pág. 11) ---- */
+  --verde-intenso: #0B813B;
+  --verde-intenso-dark: #084320;
+  --rojo-vibrante: #CD141C;
+  --rojo-vibrante-dark: #7C0B10;
+  --gris-grafito: #575756;
+  --gris-grafito-dark: #2F2F2D;
+  --azul-profundo: #142154;
+  --azul-profundo-dark: #0A112A;
+  --gris-suave: #D9D9D9;
+  --gris-suave-dark: #797979;
+  --amarillo-energetico: #FFC400;
+  --amarillo-energetico-dark: #C09401;
+
+  /* ---- Roles funcionales ---- */
+  --color-primario: var(--azul-profundo);
+  --color-primario-dark: var(--azul-profundo-dark);
+  --color-acento: var(--verde-intenso);
+  --color-acento-dark: var(--verde-intenso-dark);
+  --color-alerta: var(--rojo-vibrante);
+  --color-advertencia: var(--amarillo-energetico);
+
+  --bg-app: #F4F5F7;
+  --bg-card: #FFFFFF;
+  --bg-sutil: #F0F1F4;
+  --borde: #E2E4E9;
+  --texto-principal: #1A1B1E;
+  --texto-secundario: var(--gris-grafito);
+  --texto-tenue: #8A8D93;
+
+  --radio: 14px;
+  --radio-chico: 8px;
+  --sombra: 0 1px 2px rgba(20,33,84,.06), 0 4px 16px rgba(20,33,84,.06);
+  --sombra-flotante: 0 8px 28px rgba(20,33,84,.16);
+
+  --fuente-titulos: 'Anton', Impact, sans-serif;
+  --fuente-texto: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  color-scheme: light;
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ -webkit-text-size-adjust: 100%; }
+
+body{
+  margin: 0;
+  font-family: var(--fuente-texto);
+  background: var(--bg-app);
+  color: var(--texto-principal);
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+h1, h2, h3, .titulo-anton{
+  font-family: var(--fuente-titulos);
+  font-weight: 400;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--color-primario);
+  margin: 0;
+}
+
+button, input, select, textarea{ font-family: inherit; }
+
+/* ---------------- Layout general ---------------- */
+.app-shell{
+  max-width: 980px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--color-primario);
+  background-image: linear-gradient(135deg, var(--azul-profundo), var(--azul-profundo-dark));
+  color: #fff;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--sombra);
+}
+.topbar img.logo{ height: 30px; display:block; }
+.topbar .marca-nombre{
+  font-family: var(--fuente-titulos);
+  font-size: 15px;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  opacity: .95;
+}
+.topbar .tc-compartido{
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.12);
+  border-radius: 999px;
+  padding: 5px 10px 5px 12px;
+  font-size: 12.5px;
+}
+.topbar .tc-compartido label{ opacity: .85; white-space: nowrap; }
+.topbar .tc-compartido input{
+  width: 66px;
+  background: rgba(255,255,255,.95);
+  border: none;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-weight: 600;
+  color: var(--azul-profundo);
+  text-align: right;
+}
+
+/* ---------------- Tabs ---------------- */
+.tabs{
+  display: flex;
+  gap: 4px;
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--borde);
+  position: sticky;
+  top: 50px;
+  z-index: 25;
+  overflow-x: auto;
+}
+.tab-btn{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 8px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radio-chico);
+  color: var(--texto-secundario);
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+}
+.tab-btn svg{ width: 18px; height: 18px; flex-shrink: 0; }
+.tab-btn:hover{ background: var(--bg-sutil); }
+.tab-btn.activo{ background: var(--color-primario); color: #fff; }
+
+/* ---------------- Cards / paneles ---------------- */
+main{ flex: 1; padding: 16px; padding-bottom: 90px; }
+
+.panel{ display: none; }
+.panel.activo{ display: block; animation: aparecer .18s ease; }
+@keyframes aparecer{ from{ opacity:0; transform: translateY(4px);} to{opacity:1; transform:none;} }
+
+.card{
+  background: var(--bg-card);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.card h2{ font-size: 19px; margin-bottom: 4px; }
+.card .subt{ color: var(--texto-tenue); font-size: 13px; margin-bottom: 14px; }
+
+.field{ margin-bottom: 14px; }
+.field label{
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+.field input[type="text"],
+.field input[type="number"],
+.field input[type="search"],
+.field select,
+.field textarea{
+  width: 100%;
+  padding: 11px 12px;
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-chico);
+  font-size: 15px;
+  background: var(--bg-card);
+  color: var(--texto-principal);
+  transition: border-color .15s, box-shadow .15s;
+}
+.field textarea{ resize: vertical; min-height: 110px; line-height: 1.5; font-size: 14px; }
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(20,33,84,.12);
+}
+.field .ayuda{ font-size: 12px; color: var(--texto-tenue); margin-top: 4px; }
+
+.grid-2{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+@media (max-width: 640px){
+  .grid-2, .grid-3{ grid-template-columns: 1fr; }
+}
+
+/* ---------------- Botones ---------------- */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  font-size: 14.5px;
+  cursor: pointer;
+  transition: transform .1s, box-shadow .15s, background .15s;
+  text-decoration: none;
+}
+.btn:active{ transform: scale(.97); }
+.btn-primario{ background: var(--color-primario); color: #fff; }
+.btn-primario:hover{ background: var(--azul-profundo-dark); }
+.btn-acento{ background: var(--color-acento); color: #fff; }
+.btn-acento:hover{ background: var(--verde-intenso-dark); }
+.btn-outline{ background: transparent; border: 1.5px solid var(--borde); color: var(--texto-secundario); }
+.btn-outline:hover{ border-color: var(--color-primario); color: var(--color-primario); }
+.btn-peligro{ background: #fff; border: 1.5px solid var(--rojo-vibrante); color: var(--rojo-vibrante); }
+.btn-peligro:hover{ background: var(--rojo-vibrante); color: #fff; }
+.btn-chico{ padding: 7px 12px; font-size: 12.5px; border-radius: 999px; }
+.btn-bloque{ width: 100%; }
+.btn[disabled]{ opacity: .45; cursor: not-allowed; }
+
+/* ---------------- Toggle tipo pill (Contado/Distribuidor, Cotización/Proforma) ---------------- */
+.pill-toggle{
+  display: inline-flex;
+  background: var(--bg-sutil);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.pill-toggle button{
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.pill-toggle button.activo{ background: var(--color-primario); color: #fff; }
+.pill-toggle.acento button.activo{ background: var(--color-acento); }
+
+/* ---------------- Selector de equipo (cascada) ---------------- */
+.selector-equipo{ display: flex; flex-direction: column; gap: 10px; }
+.chips-categoria{ display: flex; flex-wrap: wrap; gap: 8px; }
+.chip{
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--borde);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: all .15s;
+}
+.chip:hover{ border-color: var(--color-primario); }
+.chip.activo{ background: var(--color-primario); border-color: var(--color-primario); color: #fff; }
+
+.lista-modelos{ display: flex; flex-direction: column; gap: 8px; max-height: 340px; overflow-y: auto; padding-right: 2px; }
+.modelo-opcion{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-chico);
+  cursor: pointer;
+  transition: all .12s;
+  background: #fff;
+}
+.modelo-opcion:hover{ border-color: var(--color-acento); background: #F5FAF6; }
+.modelo-opcion .mo-info{ display: flex; flex-direction: column; gap: 2px; }
+.modelo-opcion .mo-modelo{ font-weight: 700; font-size: 14.5px; }
+.modelo-opcion .mo-detalle{ font-size: 12.5px; color: var(--texto-tenue); }
+.modelo-opcion .mo-promo{ display:inline-block; margin-top:2px; font-size: 11px; font-weight:700; color: var(--verde-intenso-dark); background:#E6F4EA; padding: 2px 8px; border-radius: 999px; width: fit-content; }
+.modelo-opcion .mo-flecha{ color: var(--texto-tenue); flex-shrink: 0; }
+
+/* ---------------- Ítems agregados a la cotización ---------------- */
+.item-cotizacion{
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 14px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+.item-cotizacion .item-cabecera{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.item-cotizacion .item-titulo{ font-weight: 700; font-size: 15.5px; }
+.item-cotizacion .item-sub{ font-size: 12px; color: var(--texto-tenue); }
+.item-cotizacion .item-precio-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.item-cotizacion .item-precio-row .campo-precio{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-sutil);
+  border-radius: var(--radio-chico);
+  padding: 6px 10px;
+}
+.item-cotizacion .item-precio-row .campo-precio span{ font-size: 13px; color: var(--texto-secundario); font-weight: 600; }
+.item-cotizacion .item-precio-row input{
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  font-size: 15px;
+  width: 110px;
+  color: var(--texto-principal);
+}
+.item-cotizacion .item-precio-row input:focus{ outline: none; }
+.item-cotizacion .item-acciones{ display: flex; gap: 8px; margin-left: auto; }
+.item-cotizacion .ficha-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--color-primario);
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 8px;
+}
+.item-cotizacion .ficha-link svg{ width: 15px; height: 15px; }
+.item-cotizacion .sin-ficha{ font-size: 12px; color: var(--texto-tenue); margin-top: 8px; font-style: italic; }
+
+.badge-interno{
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #FFF6DC;
+  color: #8A6400;
+  border: 1px solid var(--amarillo-energetico);
+}
+
+/* ---------------- Vacío / placeholder ---------------- */
+.vacio{
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--texto-tenue);
+}
+.vacio svg{ width: 40px; height: 40px; margin-bottom: 10px; opacity: .5; }
+.vacio p{ margin: 4px 0; font-size: 14px; }
+
+/* ---------------- Documento final (preview de cotización / proforma) ---------------- */
+.doc-preview{
+  background: #fff;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 28px 24px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #222;
+}
+.doc-preview .doc-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  gap: 12px;
+}
+.doc-preview .doc-header img{ height: 46px; }
+.doc-preview .doc-ref{ text-align: right; font-size: 12.5px; color: #555; }
+.doc-preview h3{ font-family: var(--fuente-texto); font-weight: 700; font-size: 14px; color: #111; text-transform: none; margin: 16px 0 6px; }
+.doc-preview table{ width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.doc-preview table th{ text-align: left; background: var(--bg-sutil); padding: 8px 10px; font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em; color: var(--texto-secundario); }
+.doc-preview table td{ padding: 9px 10px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+.doc-preview table td.num{ text-align: right; white-space: nowrap; font-weight: 600; }
+.doc-preview .doc-item-desc{ white-space: pre-line; font-size: 12.5px; color: #444; }
+.doc-preview p{ margin: 6px 0; }
+
+/* ---------------- Resultados de calculadoras ---------------- */
+.resultado-grid{ display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 16px; }
+.resultado-tile{ background: var(--bg-sutil); border-radius: var(--radio-chico); padding: 12px 14px; }
+.resultado-tile .rt-label{ font-size: 11.5px; color: var(--texto-tenue); text-transform: uppercase; letter-spacing: .03em; }
+.resultado-tile .rt-valor{ font-size: 19px; font-weight: 700; color: var(--color-primario); margin-top: 2px; }
+.resultado-tile.acento .rt-valor{ color: var(--color-acento); }
+
+.slider-plazo{ width: 100%; accent-color: var(--color-primario); margin: 10px 0; }
+.plazo-atajos{ display: flex; gap: 6px; flex-wrap: wrap; }
+.plazo-atajo{
+  border: 1.5px solid var(--borde);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--texto-secundario);
+}
+.plazo-atajo.activo{ background: var(--color-primario); border-color: var(--color-primario); color: #fff; }
+
+table.tabla-cheques{ width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
+table.tabla-cheques th{ text-align: left; padding: 8px; background: var(--bg-sutil); font-size: 11.5px; text-transform: uppercase; color: var(--texto-secundario); }
+table.tabla-cheques td{ padding: 8px; border-bottom: 1px solid var(--borde); }
+table.tabla-cheques td.num{ text-align: right; }
+table.tabla-cheques .ars{ display:block; font-weight: 600; }
+table.tabla-cheques .usd{ display:block; font-size: 11.5px; color: var(--texto-tenue); }
+
+/* ---------------- Modal ---------------- */
+.modal-fondo{
+  position: fixed; inset: 0; background: rgba(10,17,42,.55);
+  display: none; align-items: flex-end; justify-content: center;
+  z-index: 50; backdrop-filter: blur(2px);
+}
+.modal-fondo.activo{ display: flex; }
+.modal-caja{
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  max-width: 720px;
+  max-height: 88dvh;
+  overflow-y: auto;
+  padding: 20px;
+  animation: subir .2s ease;
+}
+@media (min-width: 720px){
+  .modal-fondo{ align-items: center; }
+  .modal-caja{ border-radius: var(--radio); max-height: 82dvh; }
+}
+@keyframes subir{ from{ transform: translateY(24px); opacity:0;} to{ transform:none; opacity:1;} }
+.modal-caja .modal-header{ display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.modal-caja .modal-cerrar{ background: var(--bg-sutil); border: none; border-radius: 999px; width: 32px; height: 32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color: var(--texto-secundario); }
+
+/* ---------------- Barra flotante de acciones (Cotización) ---------------- */
+.barra-flotante{
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex; justify-content: center;
+  z-index: 20;
+  pointer-events: none;
+}
+.barra-flotante .contenido{
+  pointer-events: all;
+  width: 100%;
+  max-width: 980px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--borde);
+  box-shadow: var(--sombra-flotante);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  display: flex;
+  gap: 10px;
+}
+.barra-flotante .btn{ flex: 1; }
+
+/* ---------------- Toast ---------------- */
+.toast{
+  position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%) translateY(10px);
+  background: var(--gris-grafito-dark); color: #fff; padding: 10px 18px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; box-shadow: var(--sombra-flotante);
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+  z-index: 60; white-space: nowrap;
+}
+.toast.activo{ opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------------- Utilidades de impresión (documento final) ---------------- */
+@media print{
+  .topbar, .tabs, .barra-flotante, .toast, .no-imprimir{ display: none !important; }
+  main{ padding: 0; }
+  body{ background: #fff; }
+  .doc-preview{ box-shadow: none; padding: 0; }
+}
+
+/* ---------------- Banner de error (compartido) ---------------- */
+.error-banner{
+  display: none;
+  background: var(--rojo-vibrante);
+  color: #fff;
+  font-size: 13px;
+  padding: 10px 16px;
+  text-align: center;
+}
+.error-banner.activo{ display: block; }
+
+/* ---------------- Scrollbar sutil ---------------- */
+::-webkit-scrollbar{ width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb{ background: var(--gris-suave); border-radius: 999px; }
